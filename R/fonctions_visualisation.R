@@ -1,6 +1,13 @@
-
-
-
+#' Creates a polygon from tile's ID
+#'
+#' @param id_car id of tile, in INSPIRE style
+#'
+#' @return
+#'
+#' @examples
+#' make_contour_car("CRS3035RES200mN2009400E2992400")
+#'
+#' @export
 make_contour_car <- function(id_car){
   id_car <- as.character(id_car)
   a <- strsplit(id_car,"RES")[[1]]

@@ -16,3 +16,4 @@ Imports:
   fasterize
 Authors@R: person("Vianney", "Costemalle", email = "vianney.costemalle@insee.fr",
   role = c("aut", "cre"))
+RoxygenNote: 7.1.2

@@ -15,6 +15,7 @@
 #' according to which the distribution is done.
 #'
 #' @return The data.table \code{tab_car} with the estimated variables.
+#' @export
 imputer_cle_repartition <- function(tab_car, list_var_imput, var_cle){
   list_var_imput_2 = paste0(list_var_imput,"_diffusion")
   list_var_imput_3 = paste0(list_var_imput,"_tot_gpe")
