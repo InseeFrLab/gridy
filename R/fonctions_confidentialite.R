@@ -23,9 +23,10 @@
 #' the force of the mesh and the group of the mesh.
 #'
 #' @examples
-#'n <- 1e4
-#'tab <- as.data.table(data.frame(id_obs = 1:n, x = rnorm(n, 3e6, 2e4), y = rnorm(n, 2e6, 3e4), crs = 3035))
-#'tab_grid <- create_GS_CPP(tab, 5, c(32e3,16e3,8e3,4e3,2e3,1e3))
+#' library(data.table)
+#' n <- 1e4
+#' tab <- as.data.table(data.frame(id_obs = 1:n, x = rnorm(n, 3e6, 2e4), y = rnorm(n, 2e6, 3e4), crs = 3035))
+#' tab_grid <- create_GS_CPP(tab, 5, c(32e3,16e3,8e3,4e3,2e3,1e3))
 #' @export
 create_GS_CPP <- function(tab, seuil, mailles, ...){
   niv_max <- length(mailles) #nombre de niveau et niveau maximum des GS
@@ -91,17 +92,17 @@ create_GS_CPP <- function(tab, seuil, mailles, ...){
 
 determiner_car_naturel <- function(resul_GS){
 
-  #Table indiquant l'?tat des carreaux (diffus? ou non)
+  #Table indiquant l'etat des carreaux (diffuse ou non)
   tab_car_etat <- resul_GS[[2]]
   niv_fin <- max(tab_car_etat$niveau) #niveau le plus fin des grilles superposées
   id_car_fin = paste0("id_carreau_niv",niv_fin)
 
-  #Liens de parent?s entre les diff?rents carreaux (table d'arborescence)
+  #Liens de parentes entre les differents carreaux (table d'arborescence)
   tab_arb <- resul_GS[[1]]
   setnames(tab_arb, "id_carreau_petit", id_car_fin)
   tab_arb <- tab_arb[!duplicated(get(id_car_fin)), ]
 
-  # On ne garde que les carreaux diffus?s (etat = 1) :
+  # On ne garde que les carreaux diffuses (etat = 1) :
   tab_car_diff <- tab_car_etat[etat == 1]
   tab_reserve <- copy(tab_car_diff)
 
@@ -122,7 +123,7 @@ determiner_car_naturel <- function(resul_GS){
     if(niv == 1) tnat_fin <- tnat
     else tnat_fin <- rbind(tnat_fin, tnat)
 
-    #On retire toute la descendance des carreaux diffus?s au niveau naturel
+    #On retire toute la descendance des carreaux diffuses au niveau naturel
     id_car_nat <- tnat[etat_nat == TRUE]$id_carreau
     for(i in (niv+1):niv_fin){
       vdesc <- paste0("id_carreau_niv",i)
@@ -150,7 +151,7 @@ determiner_arb_naturel <- function(tab_car_nat, resul_GS){
   niv_fin <- max(tab_car_etat$niveau) #niveau le plus fin des grilles superposées
   id_car_fin = paste0("id_carreau_niv",niv_fin)
 
-  #Liens de parent?s entre les diff?rents carreaux (table d'arborescence)
+  #Liens de parentes entre les differents carreaux (table d'arborescence)
   tab_arb <- resul_GS[[1]]
   tab_arb <- tab_arb[!duplicated(get(id_car_fin)), ]
 

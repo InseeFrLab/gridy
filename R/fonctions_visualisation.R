@@ -3,6 +3,7 @@
 #' @param id_car id of tile, in INSPIRE style
 #'
 #' @return
+#' sf object
 #'
 #' @examples
 #' make_contour_car("CRS3035RES200mN2009400E2992400")

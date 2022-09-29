@@ -1,5 +1,6 @@
 #Fonctions pour créerles grilles
-
+#https://rdatatable.gitlab.io/data.table/articles/datatable-importing.html
+.datatable.aware <- TRUE
 
 #' Create a square grid
 #'
@@ -27,9 +28,10 @@
 #' position is the position of the lower left cell corner.
 #'
 #' @examples
+#' library(data.table)
 #' tab <- as.data.table(data.frame(id_obs = 1:10, x = rnorm(10,3e6,1e4), y = rnorm(10, 2e6, 1e4),
 #' crs = 3035))
-#' tab <- create_grid_niv(tab, 200)
+#' res <- create_grid_niv(tab, 200)
 #' @export
 create_grid_niv <- function(
     tab, taille,
@@ -38,7 +40,8 @@ create_grid_niv <- function(
     eurostat = FALSE
 ){
   # Init objet résultat
-  resul <- tab
+  require(data.table)
+  resul <- copy(as.data.table(tab))
 
   #point de base modulo la taille:
   point_base <- point_base %% taille
@@ -55,16 +58,24 @@ create_grid_niv <- function(
     else
       nom_taille <- paste0(floor(taille/1e3),"km")
 
-    resul[, (nom_var) := paste0(nom_taille,
-                                "N",floor(y / taille) * taille / (10^n),
-                                "E",floor(x / taille) * taille / (10^n)) ]
+    resul[,
+          (nom_id_car) :=
+            paste0(
+              "FR_CRS",crs,"RES", nom_taille,
+              "N",floor(y / taille) * taille / (10^n),
+              "E",floor(x / taille) * taille / (10^n)
+            )
+    ]
   }else{
     #L'autre norme Inspire
-    resul[, (nom_id_car) := paste0(
-      "CRS",crs,"RES",taille,"m",
-      "N", as.integer(floor((y - point_base[2]) / taille) * taille + point_base[2]),
-      "E", as.integer(floor((x - point_base[1]) / taille) * taille + point_base[1])
-    )]
+    resul[,
+          (nom_id_car) :=
+            paste0(
+              "FR_CRS",crs,"RES",taille,"m",
+              "N", as.integer(floor((y - point_base[2]) / taille) * taille + point_base[2]),
+              "E", as.integer(floor((x - point_base[1]) / taille) * taille + point_base[1])
+            )
+    ]
   }
 
   return(resul)
@@ -88,6 +99,7 @@ create_grid_niv <- function(
 #' grid).
 #'
 #' @examples
+#' library(data.table)
 #' tab <- as.data.table(data.frame(id_obs = 1:10, x = rnorm(10,3e6,1e4), y = rnorm(10, 2e6, 1e4),
 #' crs = 3035))
 #' grids1 <- create_grids(tab, c(1000,200))
@@ -123,7 +135,7 @@ main_depcom_on_mesh <- function(tab, taille){
 }
 
 #Fonction pour determiner les communes reconstituables entierement
-# ? partir de carreaux
+# a partir de carreaux
 comp_connexe_carcom <- function(tab, var1, var2){
   t_ind <- copy(tab)
   setnames(t_ind,c(var1, var2), c("z1", "z2")) #pour etre coherent avec les notations
