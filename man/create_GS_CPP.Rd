@@ -29,6 +29,7 @@ meshs containing less observations than
 the threshold.
 }
 \examples{
+library(data.table)
 n <- 1e4
 tab <- as.data.table(data.frame(id_obs = 1:n, x = rnorm(n, 3e6, 2e4), y = rnorm(n, 2e6, 3e4), crs = 3035))
 tab_grid <- create_GS_CPP(tab, 5, c(32e3,16e3,8e3,4e3,2e3,1e3))

@@ -10,7 +10,7 @@ make_contour_car(id_car)
 \item{id_car}{id of tile, in INSPIRE style}
 }
 \value{
-
+sf object
 }
 \description{
 Creates a polygon from tile's ID

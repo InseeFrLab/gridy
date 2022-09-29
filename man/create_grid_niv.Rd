@@ -45,7 +45,8 @@ position is the position of the lower left cell corner.
 Create a square grid
 }
 \examples{
+library(data.table)
 tab <- as.data.table(data.frame(id_obs = 1:10, x = rnorm(10,3e6,1e4), y = rnorm(10, 2e6, 1e4),
 crs = 3035))
-tab <- create_grid_niv(tab, 200)
+res <- create_grid_niv(tab, 200)
 }
