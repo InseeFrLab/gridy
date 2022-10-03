@@ -104,16 +104,22 @@ create_grid_niv <- function(
 #' crs = 3035))
 #' grids1 <- create_grids(tab, c(1000,200))
 #' grids2 <- create_grids(tab, c("1km" = 1000, "200m" = 200))
+#'
+#' @importFrom rlang .data
+#'
 #' @export
 create_grids <- function(tab, mailles, eurostat = FALSE){
 
-  resul <- tab
+  resul <- copy(tab)
   mailles <- rev(mailles[order(mailles)])
 
   purrr::iwalk(
     mailles,
-    function(x,i)
-      create_grid_niv(resul, x, nom_id_car = paste0("id_carreau_niv_", i))
+    function(x,i){
+      var = paste0("id_carreau_niv_", i)
+      e_par <- rlang::env_parent()
+      e_par$resul <- create_grid_niv(e_par$resul, x, nom_id_car = var, eurostat = eurostat)
+    }
   )
 
   return(resul)

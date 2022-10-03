@@ -1,16 +1,16 @@
 Package: gridy
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Title: Multilevel grids protection
+Version: 0.1.1
+Maintainer: Julien Jamme <julien.jamme@insee.fr>
+Description: Protection of multilevel gridded data
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 LinkingTo: Rcpp
 Imports: 
   tidyverse,
+  rlang,
   data.table,
   Rcpp,
   sf,
