@@ -13,6 +13,8 @@
 #' @param seuil The confidentiality threshold.
 #' @param mailles A vector with the sizes of the different
 #' grids.
+#' @param agreg Boolean to mention if tab is already an agreggated table.
+#' @param ... other arguments from \code{create_grid_niv()}
 #'
 #' @return At the end of the process, we get a data.table
 #' with one row for each mesh of each grid. In the columns
@@ -27,13 +29,19 @@
 #' n <- 1e4
 #' tab <- as.data.table(data.frame(id_obs = 1:n, x = rnorm(n, 3e6, 2e4), y = rnorm(n, 2e6, 3e4), crs = 3035))
 #' tab_grid <- create_GS_CPP(tab, 5, c(32e3,16e3,8e3,4e3,2e3,1e3))
+#'
 #' @export
-create_GS_CPP <- function(tab, seuil, mailles, ...){
+create_GS_CPP <- function(tab, seuil, mailles, agreg = FALSE, ...){
+
   niv_max <- length(mailles) #nombre de niveau et niveau maximum des GS
 
-  print("Etape 1 : création des différentes grilles *")
-  tab <- create_grid_niv(tab, mailles[niv_max], nom_id_car = "id_carreau_petit", ...)
-  t_car <- tab[, .(nb_obs = .N, x = first(x), y = first(y), crs = first(crs)) , by = .(id_carreau_petit)]
+  print("Etape 1 : creation des differentes grilles *")
+  if(!agreg){
+    tab <- create_grid_niv(tab, mailles[niv_max], nom_id_car = "id_carreau_petit", ...)
+    t_car <- tab[, .(nb_obs = .N, x = first(x), y = first(y), crs = first(crs)) , by = .(id_carreau_petit)]
+  }else{
+    t_car <- data.table::copy(tab)
+  }
   for(n in 1:(niv_max - 1))
     t_car <- create_grid_niv(t_car, taille = mailles[n], nom_id_car = paste0("id_carreau_niv",n))
 
@@ -47,12 +55,12 @@ create_GS_CPP <- function(tab, seuil, mailles, ...){
   for(i in 1:(niv_max - 1)){
     print(paste0("      Traitement des carreaux de niveau ",i))
 
-    #On créer une clé de rangement pour la table t_car
+    #On creer une cle de rangement pour la table t_car
     setkeyv(t_car, paste0("id_carreau_niv",i))
 
-    #on sélectionne la partie de tdiff qui va être utile
+    #on selectionne la partie de tdiff qui va être utile
     tdiff_niv_i <- tdiff[niveau == i]
-    #setkey(tdiff_niv_i, id_carreau) #on créer une clé de rangement pour accélérer les subseting
+    #setkey(tdiff_niv_i, id_carreau) #on creer une cle de rangement pour accelerer les subseting
 
     #Les carreaux du niveau i
     ids_car <- tdiff_niv_i$id_carreau
@@ -80,7 +88,7 @@ create_GS_CPP <- function(tab, seuil, mailles, ...){
                                                force = lres$force,
                                                groupe = lres$groupe))
 
-    #on complète la table de diffusion finale des carreaux
+    #on complete la table de diffusion finale des carreaux
     tdiff <- rbind(tdiff, tdiff_niv_plus)
 
 
@@ -90,11 +98,25 @@ create_GS_CPP <- function(tab, seuil, mailles, ...){
 }
 
 
+#' determine the natural grid
+#'
+#' @param resul_GS result of the create_GS_CPP() function
+#'
+#' @return a data.table dataframe
+#'
+#' @examples
+#' library(data.table)
+#' n <- 1e4
+#' tab <- as.data.table(data.frame(id_obs = 1:n, x = rnorm(n, 3e6, 2e4), y = rnorm(n, 2e6, 3e4), crs = 3035))
+#' tab_GS <- create_GS_CPP(tab, 5, c(32e3,16e3,8e3,4e3,2e3,1e3))
+#' tab_car_nat <- determiner_car_naturel(tab_GS)
+#'
+#' @export
 determiner_car_naturel <- function(resul_GS){
 
   #Table indiquant l'etat des carreaux (diffuse ou non)
   tab_car_etat <- resul_GS[[2]]
-  niv_fin <- max(tab_car_etat$niveau) #niveau le plus fin des grilles superposées
+  niv_fin <- max(tab_car_etat$niveau) #niveau le plus fin des grilles superposees
   id_car_fin = paste0("id_carreau_niv",niv_fin)
 
   #Liens de parentes entre les differents carreaux (table d'arborescence)
@@ -146,9 +168,25 @@ determiner_car_naturel <- function(resul_GS){
 }
 
 
+#' compute the natural tree
+#'
+#' @param tab_car_nat Table of natural tiles
+#' @param resul_GS result of the \code{create_GS} function
+#'
+#' @return a data.table dataframe
+#'
+#' @examples
+#' library(data.table)
+#' n <- 1e4
+#' tab <- as.data.table(data.frame(id_obs = 1:n, x = rnorm(n, 3e6, 2e4), y = rnorm(n, 2e6, 3e4), crs = 3035))
+#' tab_GS <- create_GS_CPP(tab, 5, c(32e3,16e3,8e3,4e3,2e3,1e3))
+#' tab_car_nat <- determiner_car_naturel(tab_GS)
+#' natural_arb <- determiner_arb_naturel(tab_car_nat, tab_GS)
+#'
+#' @export
 determiner_arb_naturel <- function(tab_car_nat, resul_GS){
   tab_car_etat <- resul_GS[[2]]
-  niv_fin <- max(tab_car_etat$niveau) #niveau le plus fin des grilles superposées
+  niv_fin <- max(tab_car_etat$niveau) #niveau le plus fin des grilles superposees
   id_car_fin = paste0("id_carreau_niv",niv_fin)
 
   #Liens de parentes entre les differents carreaux (table d'arborescence)

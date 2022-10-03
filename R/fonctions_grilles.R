@@ -1,4 +1,4 @@
-#Fonctions pour créerles grilles
+#Fonctions pour creer les grilles
 #https://rdatatable.gitlab.io/data.table/articles/datatable-importing.html
 .datatable.aware <- TRUE
 
@@ -40,7 +40,7 @@ create_grid_niv <- function(
     eurostat = FALSE
 ){
   # Init objet résultat
-  require(data.table)
+
   resul <- copy(as.data.table(tab))
 
   #point de base modulo la taille:
@@ -110,7 +110,7 @@ create_grid_niv <- function(
 #' @export
 create_grids <- function(tab, mailles, eurostat = FALSE){
 
-  resul <- copy(tab)
+  resul <- data.table::copy(tab)
   mailles <- rev(mailles[order(mailles)])
 
   purrr::iwalk(
@@ -143,7 +143,7 @@ main_depcom_on_mesh <- function(tab, taille){
 #Fonction pour determiner les communes reconstituables entierement
 # a partir de carreaux
 comp_connexe_carcom <- function(tab, var1, var2){
-  t_ind <- copy(tab)
+  t_ind <- data.table::copy(tab)
   setnames(t_ind,c(var1, var2), c("z1", "z2")) #pour etre coherent avec les notations
   #des fonctions du package diffman
 
