@@ -3,18 +3,29 @@ Type: Package
 Title: Multilevel grids protection
 Version: 0.1.1
 Maintainer: Julien Jamme <julien.jamme@insee.fr>
-Description: Protection of multilevel gridded data
+Description: Protects multilevel gridded data.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 LinkingTo: Rcpp
 Imports: 
-  tidyverse,
   rlang,
   data.table,
   Rcpp,
   sf,
   fasterize
-Authors@R: person("Vianney", "Costemalle", email = "vianney.costemalle@insee.fr",
-  role = c("aut", "cre"))
+Authors@R: c(
+  person(
+    "Vianney", "Costemalle",
+    role = c("aut")
+  ),
+  person(
+    "Julien", "Jamme", email = "julien.jamme@insee.fr",
+    role = c("aut", "cre")
+  ),
+  person(
+      family = "Institut National de la Statistique et des Études Économiques",
+      role = "cph"
+  )
+ )
 RoxygenNote: 7.1.2
