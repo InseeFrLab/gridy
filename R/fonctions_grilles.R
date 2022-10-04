@@ -41,7 +41,7 @@ create_grid_niv <- function(
 ){
   # Init objet résultat
 
-  resul <- copy(as.data.table(tab))
+  resul <- data.table::copy(as.data.table(tab))
 
   #point de base modulo la taille:
   point_base <- point_base %% taille

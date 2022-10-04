@@ -43,7 +43,7 @@ create_GS_CPP <- function(tab, seuil, mailles, agreg = FALSE, ...){
     t_car <- data.table::copy(tab)
   }
   for(n in 1:(niv_max - 1))
-    t_car <- create_grid_niv(t_car, taille = mailles[n], nom_id_car = paste0("id_carreau_niv",n))
+    t_car <- create_grid_niv(t_car, taille = mailles[n], nom_id_car = paste0("id_carreau_niv",n), ...)
 
 
   print("Etape 2 : Initialiser la table de diffusion 'tdiff' **")
