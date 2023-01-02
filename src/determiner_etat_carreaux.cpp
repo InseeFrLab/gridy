@@ -14,14 +14,14 @@ using namespace std;
 //
 
 // [[Rcpp::export]]
-List det_etat(NumericVector nb, bool ep, int fp, int gp, int seuil, int max_gpe) {
+List det_etat(NumericVector nb, bool ep, double fp, int gp, double seuil, int max_gpe) {
 
-  int Tot_B = 0;
+  double Tot_B = 0;
   int n = nb.size();
   int gpe_actu = max_gpe + 1;
 
   LogicalVector etat(n);
-  IntegerVector force(n);
+  NumericVector force(n);
   IntegerVector groupe(n);
 
   if(ep){
@@ -88,18 +88,18 @@ List det_etat(NumericVector nb, bool ep, int fp, int gp, int seuil, int max_gpe)
 // [[Rcpp::export]]
 List det_etat_tot(CharacterVector id_car_pere,
                   LogicalVector etats_pere,
-                  IntegerVector forces_pere,
+                  NumericVector forces_pere,
                   IntegerVector groupes_pere,
                   CharacterVector id_car_pere_fils,
                   NumericVector nb_obs_fils,
-                  int seuil){
+                  double seuil){
 
   int n = id_car_pere.size();
   int m = nb_obs_fils.size();
   int max_gpe = max(groupes_pere);
 
   LogicalVector etat_fils(m);
-  IntegerVector force_fils(m);
+  NumericVector force_fils(m);
   IntegerVector groupe_fils(m);
 
   int barWidth = 100;
@@ -114,7 +114,7 @@ List det_etat_tot(CharacterVector id_car_pere,
 
     NumericVector nb(i2-i1);
     bool ep = etats_pere[j];
-    int fp = forces_pere[j];
+    double fp = forces_pere[j];
     int gp = groupes_pere[j];
     for(int i = i1; i<i2; i++){
       nb[i-i1] = nb_obs_fils[i];
@@ -122,7 +122,7 @@ List det_etat_tot(CharacterVector id_car_pere,
 
     List lres = det_etat(nb, ep, fp, gp, seuil, max_gpe);
     LogicalVector l_etat = lres["etat"];
-    IntegerVector l_force = lres["force"];
+    NumericVector l_force = lres["force"];
     IntegerVector l_groupe = lres["groupe"];
 
     for(int i = i1; i<i2; i++){

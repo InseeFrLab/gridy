@@ -1,6 +1,6 @@
 #devtools::find_rtools(FALSE, TRUE)
 #sourceCpp("X:/HAB-Cartographie/Carroyage/Grilles_superposees/Version3_R/gridy/Rcpp/determiner_etat_carreaux.cpp")
-
+.datatable.aware <- TRUE
 
 
 #' Create confidential grids

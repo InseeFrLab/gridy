@@ -11,34 +11,34 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // det_etat
-List det_etat(NumericVector nb, bool ep, int fp, int gp, int seuil, int max_gpe);
+List det_etat(NumericVector nb, bool ep, double fp, int gp, double seuil, int max_gpe);
 RcppExport SEXP _gridy_det_etat(SEXP nbSEXP, SEXP epSEXP, SEXP fpSEXP, SEXP gpSEXP, SEXP seuilSEXP, SEXP max_gpeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type nb(nbSEXP);
     Rcpp::traits::input_parameter< bool >::type ep(epSEXP);
-    Rcpp::traits::input_parameter< int >::type fp(fpSEXP);
+    Rcpp::traits::input_parameter< double >::type fp(fpSEXP);
     Rcpp::traits::input_parameter< int >::type gp(gpSEXP);
-    Rcpp::traits::input_parameter< int >::type seuil(seuilSEXP);
+    Rcpp::traits::input_parameter< double >::type seuil(seuilSEXP);
     Rcpp::traits::input_parameter< int >::type max_gpe(max_gpeSEXP);
     rcpp_result_gen = Rcpp::wrap(det_etat(nb, ep, fp, gp, seuil, max_gpe));
     return rcpp_result_gen;
 END_RCPP
 }
 // det_etat_tot
-List det_etat_tot(CharacterVector id_car_pere, LogicalVector etats_pere, IntegerVector forces_pere, IntegerVector groupes_pere, CharacterVector id_car_pere_fils, NumericVector nb_obs_fils, int seuil);
+List det_etat_tot(CharacterVector id_car_pere, LogicalVector etats_pere, NumericVector forces_pere, IntegerVector groupes_pere, CharacterVector id_car_pere_fils, NumericVector nb_obs_fils, double seuil);
 RcppExport SEXP _gridy_det_etat_tot(SEXP id_car_pereSEXP, SEXP etats_pereSEXP, SEXP forces_pereSEXP, SEXP groupes_pereSEXP, SEXP id_car_pere_filsSEXP, SEXP nb_obs_filsSEXP, SEXP seuilSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< CharacterVector >::type id_car_pere(id_car_pereSEXP);
     Rcpp::traits::input_parameter< LogicalVector >::type etats_pere(etats_pereSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type forces_pere(forces_pereSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type forces_pere(forces_pereSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type groupes_pere(groupes_pereSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type id_car_pere_fils(id_car_pere_filsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type nb_obs_fils(nb_obs_filsSEXP);
-    Rcpp::traits::input_parameter< int >::type seuil(seuilSEXP);
+    Rcpp::traits::input_parameter< double >::type seuil(seuilSEXP);
     rcpp_result_gen = Rcpp::wrap(det_etat_tot(id_car_pere, etats_pere, forces_pere, groupes_pere, id_car_pere_fils, nb_obs_fils, seuil));
     return rcpp_result_gen;
 END_RCPP
