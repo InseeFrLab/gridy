@@ -10,10 +10,12 @@ LazyData: true
 LinkingTo: Rcpp
 Imports: 
   rlang,
+  purrr,
   data.table,
   Rcpp,
   sf,
-  fasterize
+  fasterize,
+  raster
 Authors@R: c(
   person(
     "Vianney", "Costemalle",
@@ -29,3 +31,6 @@ Authors@R: c(
   )
  )
 RoxygenNote: 7.1.2
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

@@ -1,4 +1,4 @@
-
+.datatable.aware <- TRUE
 
 #' Estimate protected mesh
 #'

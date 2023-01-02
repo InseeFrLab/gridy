@@ -106,6 +106,7 @@ create_grid_niv <- function(
 #' grids2 <- create_grids(tab, c("1km" = 1000, "200m" = 200))
 #'
 #' @importFrom rlang .data
+#' @importFrom purrr iwalk
 #'
 #' @export
 create_grids <- function(tab, mailles, eurostat = FALSE){
@@ -140,22 +141,22 @@ main_depcom_on_mesh <- function(tab, taille){
   return(tab_car_com)
 }
 
-#Fonction pour determiner les communes reconstituables entierement
-# a partir de carreaux
-comp_connexe_carcom <- function(tab, var1, var2){
-  t_ind <- data.table::copy(tab)
-  setnames(t_ind,c(var1, var2), c("z1", "z2")) #pour etre coherent avec les notations
-  #des fonctions du package diffman
-
-  t_crois <- diffman::tab_crois(t_ind)
-  t_crois <- diffman::simplify_z2_fus(t_crois)
-  m_crois <- diffman::matrix_crois(t_crois)
-  m_liens <- diffman::matrix_liens(m_crois)
-
-  ind_com_isolees <- which(apply(m_liens,1, sum) == 0)
-  com_isolees <- rownames(m_liens)[ind_com_isolees]
-
-  return(com_isolees)
-}
+# #Fonction pour determiner les communes reconstituables entierement
+# # a partir de carreaux
+# comp_connexe_carcom <- function(tab, var1, var2){
+#   t_ind <- data.table::copy(tab)
+#   setnames(t_ind,c(var1, var2), c("z1", "z2")) #pour etre coherent avec les notations
+#   #des fonctions du package diffman
+#
+#   t_crois <- diffman::tab_crois(t_ind)
+#   t_crois <- diffman::simplify_z2_fus(t_crois)
+#   m_crois <- diffman::matrix_crois(t_crois)
+#   m_liens <- diffman::matrix_liens(m_crois)
+#
+#   ind_com_isolees <- which(apply(m_liens,1, sum) == 0)
+#   com_isolees <- rownames(m_liens)[ind_com_isolees]
+#
+#   return(com_isolees)
+# }
 
 
