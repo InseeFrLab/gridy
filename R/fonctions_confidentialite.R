@@ -9,7 +9,9 @@
 #' meshs containing less observations than
 #' the threshold.
 #'
-#' @param tab A data.table with at least (x, y, crs) columns.
+#' @param tab A data.table at individual level with at least (x, y, crs) columns
+#' or an aggregated data.table with at least (n_obs, x, y, crs). In this latter case,
+#' observations can be aggregated on the centroid of the squares of the finest grid level.
 #' @param seuil The confidentiality threshold.
 #' @param mailles A vector with the sizes of the different
 #' grids.
