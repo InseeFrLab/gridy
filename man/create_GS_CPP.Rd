@@ -7,7 +7,9 @@
 create_GS_CPP(tab, seuil, mailles, agreg = FALSE, ...)
 }
 \arguments{
-\item{tab}{A data.table with at least (x, y, crs) columns.}
+\item{tab}{A data.table at individual level with at least (x, y, crs) columns
+or an aggregated data.table with at least (n_obs, x, y, crs). In this latter case,
+observations can be aggregated on the centroid of the squares of the finest grid level.}
 
 \item{seuil}{The confidentiality threshold.}
 
