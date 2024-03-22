@@ -39,6 +39,10 @@ create_grid_niv <- function(
     point_base = c(0, 0),
     eurostat = FALSE
 ){
+
+  x = y = crs = NULL
+  # due to NSE notes in R CMD check
+
   # Init objet résultat
 
   resul <- data.table::copy(as.data.table(tab))
@@ -128,6 +132,10 @@ create_grids <- function(tab, mailles, eurostat = FALSE){
 
 #Fonction pour determiner la commune principale a laquelle appartient le carreau
 main_depcom_on_mesh <- function(tab, taille){
+
+  depcom = id_carreau = NULL
+  # due to NSE notes in R CMD check
+
   f <- function(a, num){
     ta <- table(a)
     na <- names(ta[order(ta, decreasing = TRUE)])
@@ -140,23 +148,5 @@ main_depcom_on_mesh <- function(tab, taille){
 
   return(tab_car_com)
 }
-
-# #Fonction pour determiner les communes reconstituables entierement
-# # a partir de carreaux
-# comp_connexe_carcom <- function(tab, var1, var2){
-#   t_ind <- data.table::copy(tab)
-#   setnames(t_ind,c(var1, var2), c("z1", "z2")) #pour etre coherent avec les notations
-#   #des fonctions du package diffman
-#
-#   t_crois <- diffman::tab_crois(t_ind)
-#   t_crois <- diffman::simplify_z2_fus(t_crois)
-#   m_crois <- diffman::matrix_crois(t_crois)
-#   m_liens <- diffman::matrix_liens(m_crois)
-#
-#   ind_com_isolees <- which(apply(m_liens,1, sum) == 0)
-#   com_isolees <- rownames(m_liens)[ind_com_isolees]
-#
-#   return(com_isolees)
-# }
 
 

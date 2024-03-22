@@ -27,6 +27,10 @@
 #'
 #' @export
 imputer_cle_repartition <- function(tab_car, list_var_imput, var_cle){
+
+  cle = groupe = id_carreau_nat = NULL
+  # due to NSE notes in R CMD check
+
   list_var_imput_2 = paste0(list_var_imput,"_diffusion")
   list_var_imput_3 = paste0(list_var_imput,"_tot_gpe")
 

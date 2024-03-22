@@ -1,5 +1,3 @@
-#devtools::find_rtools(FALSE, TRUE)
-#sourceCpp("X:/HAB-Cartographie/Carroyage/Grilles_superposees/Version3_R/gridy/Rcpp/determiner_etat_carreaux.cpp")
 .datatable.aware <- TRUE
 
 
@@ -34,6 +32,9 @@
 #'
 #' @export
 create_GS_CPP <- function(tab, seuil, mailles, agreg = FALSE, ...){
+
+  x = y = crs = id_carreau_petit = nb_obs = id_carreau_niv1 = niveau = p = NULL
+  # due to NSE notes in R CMD check
 
   niv_max <- length(mailles) #nombre de niveau et niveau maximum des GS
 
@@ -116,6 +117,9 @@ create_GS_CPP <- function(tab, seuil, mailles, agreg = FALSE, ...){
 #' @export
 determiner_car_naturel <- function(resul_GS){
 
+  etat = niveau = id_fils = id_carreau = etat_fils = etat_nat = NULL
+  # due to NSE notes in R CMD check
+
   #Table indiquant l'etat des carreaux (diffuse ou non)
   tab_car_etat <- resul_GS[[2]]
   niv_fin <- max(tab_car_etat$niveau) #niveau le plus fin des grilles superposees
@@ -187,6 +191,10 @@ determiner_car_naturel <- function(resul_GS){
 #'
 #' @export
 determiner_arb_naturel <- function(tab_car_nat, resul_GS){
+
+  niveau = id_carreau_fin = id_carreau_nat = NULL
+  # due to NSE notes in R CMD check
+
   tab_car_etat <- resul_GS[[2]]
   niv_fin <- max(tab_car_etat$niveau) #niveau le plus fin des grilles superposees
   id_car_fin = paste0("id_carreau_niv",niv_fin)
