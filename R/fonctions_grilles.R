@@ -29,8 +29,13 @@
 #'
 #' @examples
 #' library(data.table)
-#' tab <- as.data.table(data.frame(id_obs = 1:10, x = rnorm(10,3e6,1e4), y = rnorm(10, 2e6, 1e4),
-#' crs = 3035))
+#' tab <- as.data.table(
+#'   data.frame(
+#'     id_obs = 1:10,
+#'     x = rnorm(10,3e6,1e4),
+#'     y = rnorm(10, 2e6, 1e4),
+#'     crs = 3035)
+#' )
 #' res <- create_grid_niv(tab, 200)
 #' @export
 create_grid_niv <- function(
@@ -104,8 +109,13 @@ create_grid_niv <- function(
 #'
 #' @examples
 #' library(data.table)
-#' tab <- as.data.table(data.frame(id_obs = 1:10, x = rnorm(10,3e6,1e4), y = rnorm(10, 2e6, 1e4),
-#' crs = 3035))
+#' tab <- as.data.table(
+#'   data.frame(
+#'     id_obs = 1:10,
+#'     x = rnorm(10,3e6,1e4),
+#'     y = rnorm(10, 2e6, 1e4),
+#'     crs = 3035)
+#' )
 #' grids1 <- create_grids(tab, c(1000,200))
 #' grids2 <- create_grids(tab, c("1km" = 1000, "200m" = 200))
 #'

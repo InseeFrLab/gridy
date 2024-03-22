@@ -19,11 +19,16 @@
 #' @examples
 #' library(data.table)
 #' n <- 1e4
-#' tab <- as.data.table(data.frame(id_obs = 1:n, x = rnorm(n, 3e6, 2e4), y = rnorm(n, 2e6, 3e4), crs = 3035))
+#' tab <- as.data.table(
+#'   data.frame(id_obs = 1:n, x = rnorm(n, 3e6, 2e4),
+#'   y = rnorm(n, 2e6, 3e4), crs = 3035))
 #' tab_GS <- create_GS_CPP(tab, 5, c(32e3,16e3,8e3,4e3,2e3,1e3))
 #' tab_car <- tab_GS$tab_car
 #' tab_car[, `:=`(poph = nb_obs*0.48, popf = nb_obs*0.52)]
-#' tab_diff <- imputer_cle_repartition(tab_car, list_var_imput = c("poph","popf"), var_cle = "nb_obs")
+#' tab_diff <- imputer_cle_repartition(
+#'   tab_car,
+#'   list_var_imput = c("poph","popf"),
+#'   var_cle = "nb_obs")
 #'
 #' @export
 imputer_cle_repartition <- function(tab_car, list_var_imput, var_cle){

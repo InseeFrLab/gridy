@@ -138,19 +138,19 @@ List det_etat_tot(CharacterVector id_car_pere,
     if((j % 5000 == 0)){
       double jf = j;
       float progress = jf/n;
-      std::cout << "[";
+      Rcpp::Rcout << "[";
       int pos = barWidth * progress;
       for (int i = 0; i < barWidth; ++i) {
-        if (i < pos) std::cout << "=";
-        else if (i == pos) std::cout << ">";
-        else std::cout << " ";
+        if (i < pos) Rcpp::Rcout << "=";
+        else if (i == pos) Rcpp::Rcout << ">";
+        else Rcpp::Rcout << " ";
       }
-      std::cout << "] " << int(progress * 100.0) << " %\r";
-      std::cout.flush();
+      Rcpp::Rcout << "] " << int(progress * 100.0) << " %\r";
+      Rcpp::Rcout.flush();
     }}
   }
 
-  std::cout << std::endl;
+  Rcpp::Rcout << std::endl;
 
   List ret;
   ret["etat"] = etat_fils;
