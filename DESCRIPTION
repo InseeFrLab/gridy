@@ -1,18 +1,36 @@
 Package: gridy
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Multilevel grids protection
+Version: 0.1.1
+Maintainer: Julien Jamme <julien.jamme@insee.fr>
+Description: Protects multilevel gridded data with a quadtree approach.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+LinkingTo: Rcpp
 Imports: 
-  tidyverse,
+  rlang,
+  purrr,
   data.table,
   Rcpp,
   sf,
-  fasterize
-Authors@R: person("Vianney", "Costemalle", email = "vianney.costemalle@insee.fr",
-  role = c("aut", "cre"))
+  fasterize,
+  raster
+Authors@R: c(
+  person(
+    "Vianney", "Costemalle",
+    role = c("aut")
+  ),
+  person(
+    "Julien", "Jamme", email = "julien.jamme@insee.fr",
+    role = c("aut", "cre")
+  ),
+  person(
+      family = "Institut National de la Statistique et des Études Économiques",
+      role = "cph"
+  )
+ )
+RoxygenNote: 7.2.3
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
