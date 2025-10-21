@@ -23,14 +23,13 @@ Authors@R: c(
   ),
   person(
     "Julien", "Jamme", email = "julien.jamme@insee.fr",
-    role = c("aut", "cre")
+    role = c("cre")
   ),
   person(
       family = "Institut National de la Statistique et des Études Économiques",
       role = "cph"
   )
  )
-RoxygenNote: 7.2.3
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
