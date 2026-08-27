@@ -32,7 +32,7 @@ List det_etat(NumericVector nb, bool ep, double fp, int gp, double seuil, int ma
         groupe[i] = gpe_actu;
         Tot_B += nb[i];
       }
-      else if((0 < Tot_B) & (Tot_B < seuil)){
+      else if((0 < Tot_B) && (Tot_B < seuil)){
         etat[i] = FALSE;
         force[i] = seuil - Tot_B;
         groupe[i] = gpe_actu;
@@ -109,8 +109,8 @@ List det_etat_tot(CharacterVector id_car_pere,
 
     int i1 = 0;
     int i2 = 0;
-    while((i1 < m) & (id_car_pere_fils[i1] != id_p)){i1++ ; i2++;}
-    while((i2 < m) & (id_car_pere_fils[i2] == id_p)){i2++;}
+    while((i1 < m) && (id_car_pere_fils[i1] != id_p)){i1++ ; i2++;}
+    while((i2 < m) && (id_car_pere_fils[i2] == id_p)){i2++;}
 
     NumericVector nb(i2-i1);
     bool ep = etats_pere[j];
