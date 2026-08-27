@@ -13,11 +13,15 @@ merged with its neighbours in order to meet a confidentiality threshold.
 The result is a grid whose resolution adapts to density: fine wherever counts
 allow it, coarse elsewhere.
 
-The method has been developed at Insee and is explained in a paper presented 
-to a conference (Journées de Méthodologie Statistique) in 2018. The paper (in French) is 
+## References
+
+The method has been developed at Insee and originally presented in a paper 
+for the  conference Journées de Méthodologie Statistique in 2018. The paper (in French) is 
 available [here](https://journees-methodologie-statistique.insee.net/diffusion-de-donnees-finement-localisees-ne-laisser-personne-sur-le-carreau/).
-The method has been presented in NTTS 2023 conference, the poster is downloadable 
-[here](https://github.com/InseeFrLab/ntts_2023_poster_census_sdc_template_insee/blob/main/ntts_2023_poster_census_sdc_template_insee.pdf). 
+The method is also presented at the chapter 5 of the European *Guidelines for statistical disclosure control methods applied on geo-referenced data* 
+(Möhler et al. 2025, [data.europa.eu/doi/10.2785/8238461](data.europa.eu/doi/10.2785/8238461)).
+
+
 
 ## Installation
 
