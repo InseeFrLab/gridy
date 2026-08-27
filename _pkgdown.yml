@@ -1,0 +1,60 @@
+url: https://inseefrlab.github.io/gridy/
+
+template:
+  bootstrap: 5
+  bslib:
+    primary: "#1f4e79"
+    base_font: {google: "Source Sans 3"}
+    code_font: {google: "Source Code Pro"}
+
+home:
+  title: Protect multilevel gridded data
+  description: >
+    Build variable-resolution grids from geolocated data, so that every
+    disseminated unit meets a frequency threshold.
+
+navbar:
+  structure:
+    left: [reference, articles]
+    right: [search, github]
+
+reference:
+
+- title: Main function
+  desc: >
+    The entry point of the package. Overlays the nested grids, walks down the
+    quadtree and returns the dissemination table holding the state, force and
+    group of every cell at every level.
+  contents:
+  - create_GS_CPP
+
+- title: Building grids
+  desc: >
+    Creating square grids and their Inspire identifiers. Useful on their own,
+    and called internally by `create_GS_CPP()`.
+  contents:
+  - create_grid_niv
+  - create_grids
+
+- title: Extracting the natural grid
+  desc: >
+    Deriving the variable-resolution grid from the output of `create_GS_CPP()`:
+    on each branch of the tree, the finest cell that can be disseminated, plus
+    its correspondence with the finest-level cells.
+  contents:
+  - determiner_car_naturel
+  - determiner_arb_naturel
+
+- title: Estimating protected cells
+  desc: >
+    Cells that cannot be disseminated on their own are estimated by
+    distributing the total of their group in proportion to a non-sensitive
+    variable.
+  contents:
+  - imputer_cle_repartition
+
+- title: Mapping
+  desc: >
+    Turning Inspire cell identifiers into geometries.
+  contents:
+  - make_contour_car

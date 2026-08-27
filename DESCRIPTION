@@ -28,7 +28,7 @@ Authors@R: c(
  )
 Maintainer: Julien Jamme <julien.jamme@insee.fr>
 License: MIT + file LICENSE
-URL: https://github.com/InseeFrLab/gridy
+URL: https://github.com/InseeFrLab/gridy, https://inseefrlab.github.io/gridy
 BugReports: https://github.com/InseeFrLab/gridy/issues
 Encoding: UTF-8
 Language: en
