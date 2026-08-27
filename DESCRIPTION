@@ -1,21 +1,17 @@
 Package: gridy
 Type: Package
-Title: Multilevel grids protection
+Title: Protect Multilevel Gridded Data with a Quadtree Approach
 Version: 0.1.2
-Maintainer: Julien Jamme <julien.jamme@insee.fr>
-Description: Protects multilevel gridded data with a quadtree approach.
-License: MIT + file LICENSE
-Encoding: UTF-8
-LazyData: true
-LinkingTo: Rcpp
-Imports: 
-  rlang,
-  purrr,
-  data.table,
-  Rcpp,
-  sf,
-  fasterize,
-  raster
+Description: Builds variable-resolution grids from geolocated data in order to
+  disseminate them under a frequency threshold rule. Several nested square
+  grids are overlaid, from the coarsest to the finest, and each cell is walked
+  down the resulting quadtree, a cell whose count reaches the threshold is
+  disseminated on its own, while cells below it are merged with their
+  neighbours until the threshold is met. Cell identifiers follow the Inspire
+  specification for statistical units. Helpers are provided to extract the
+  resulting natural grid, to estimate sensitive variables over protected cells
+  by proportional allocation, and to convert cell identifiers into 'sf'
+  polygons.
 Authors@R: c(
   person(
     "Vianney", "Costemalle",
@@ -30,7 +26,24 @@ Authors@R: c(
       role = "cph"
   )
  )
-Suggests: 
+Maintainer: Julien Jamme <julien.jamme@insee.fr>
+License: MIT + file LICENSE
+URL: https://github.com/InseeFrLab/gridy
+BugReports: https://github.com/InseeFrLab/gridy/issues
+Encoding: UTF-8
+Language: en
+Depends:
+    R (>= 3.5.0)
+Imports:
+    rlang,
+    purrr,
+    data.table,
+    Rcpp,
+    sf,
+    fasterize,
+    raster
+LinkingTo: Rcpp
+Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Config/roxygen2/version: 8.0.0
