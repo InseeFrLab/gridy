@@ -1,0 +1,164 @@
+# gridy
+
+**Protection of multilevel gridded data using a quadtree approach.**
+
+`gridy` builds variable-resolution grids from geolocated data. The idea
+is to overlay several nested square grids, from the coarsest to the
+finest, then decide for each cell whether it can be disseminated on its
+own or has to be merged with its neighbours in order to meet a
+confidentiality threshold.
+
+The result is a grid whose resolution adapts to density: fine wherever
+counts allow it, coarse elsewhere.
+
+The method has been developed at Insee and is explained in a paper
+presented to a conference (Journées de Méthodologie Statistique) in
+2018. The paper (in French) is available
+[here](https://journees-methodologie-statistique.insee.net/diffusion-de-donnees-finement-localisees-ne-laisser-personne-sur-le-carreau/).
+The method has been presented in NTTS 2023 conference, the poster is
+downloadable
+[here](https://github.com/InseeFrLab/ntts_2023_poster_census_sdc_template_insee/blob/main/ntts_2023_poster_census_sdc_template_insee.pdf).
+
+## Installation
+
+``` r
+
+# install.packages("remotes")
+remotes::install_github("InseeFrLab/gridy")
+```
+
+The package ships C++ code (Rcpp). Installing from source requires a
+working toolchain: Rtools on Windows, `r-base-dev` on Debian/Ubuntu.
+
+Dependencies: `data.table`, `Rcpp`, `rlang`, `purrr`, `sf`, `fasterize`,
+`raster`.
+
+## How it works
+
+Cells form a tree. A cell at level `i` (the *parent*) is subdivided into
+cells at level `i+1` (its *children*). Level 1 is the coarsest
+resolution, the last level the finest.
+
+The algorithm walks down the tree one level at a time. For each parent
+cell, it examines the children in increasing order of count and assigns
+three attributes:
+
+| Attribute | Meaning |
+|----|----|
+| `etat` | `TRUE` if the cell meets the threshold and can be disseminated on its own, `FALSE` if it has to be merged. |
+| `force` | Count still needed for the group being formed to cross the threshold. `0` once the threshold is met. |
+| `groupe` | Group identifier. Cells sharing a `groupe` are disseminated merged together. |
+
+A parent cell that cannot be disseminated passes its state down to its
+entire descent: the whole branch stays aggregated. A parent cell that
+can be disseminated lets its children be assessed individually, the
+smallest ones being absorbed into a group until the threshold is
+reached.
+
+Cell identifiers follow the **Inspire** specification:
+`FR_CRS3035RES1000mN2000000E3000000`, where the stated position is that
+of the lower left corner.
+
+## Getting started
+
+``` r
+
+library(gridy)
+library(data.table)
+
+# Geolocated individual data: x, y and the coordinate reference system
+n <- 1e4
+tab <- as.data.table(
+  data.frame(
+    id_obs = 1:n,
+    x = rnorm(n, 3e6, 2e4),
+    y = rnorm(n, 2e6, 3e4),
+    crs = 3035
+  )
+)
+
+# 1. Build the variable-resolution grid
+#    mesh sizes in DECREASING order, threshold of 5 observations
+tab_GS <- create_GS_CPP(tab, seuil = 5, mailles = c(32e3, 16e3, 8e3, 4e3, 2e3, 1e3))
+
+# 2. Extract the "natural" grid: on each branch of the tree,
+#    the finest cell that can be disseminated
+tab_car_nat <- determiner_car_naturel(tab_GS)
+
+# 3. Lookup table between natural cells and finest-level cells
+arb_nat <- determiner_arb_naturel(tab_car_nat, tab_GS)
+
+# 4. Estimate sensitive variables on protected cells, by distributing
+#    the group total in proportion to a non-sensitive variable
+tab_car <- tab_GS$tab_car
+tab_car[, `:=`(poph = nb_obs * 0.48, popf = nb_obs * 0.52)]
+tab_diff <- imputer_cle_repartition(
+  tab_car,
+  list_var_imput = c("poph", "popf"),
+  var_cle = "nb_obs"
+)
+
+# 5. Turn cells into geometries for mapping
+contours <- lapply(tab_car_nat$id_carreau_nat, make_contour_car)
+```
+
+### Pre-aggregated data
+
+If observations are already aggregated on the centroids of the finest
+grid cells, pass `agreg = TRUE`. The table must then hold the columns
+`nb_obs`, `x`, `y` and `crs`.
+
+``` r
+
+tab_GS <- create_GS_CPP(t_car, seuil = 11, mailles = c(8e3, 4e3, 2e3, 1e3), agreg = TRUE)
+```
+
+## Output of `create_GS_CPP()`
+
+The function returns a list of two `data.table` objects.
+
+**`tab_arb`** — the tree table. One row per cell of the finest grid,
+with one identifier column per level (`id_carreau_niv1` through
+`id_carreau_niv{n-1}`, then `id_carreau_petit`). This is what carries
+the parent-child links.
+
+**`tab_car`** — the dissemination table. One row per cell of each level:
+
+| Column                    | Contents                                        |
+|---------------------------|-------------------------------------------------|
+| `id_carreau`              | Inspire identifier of the cell                  |
+| `p`                       | Identifier of the parent cell (`NA` at level 1) |
+| `niveau`                  | Grid level, 1 being the coarsest resolution     |
+| `nb_obs`                  | Number of observations in the cell              |
+| `etat`, `force`, `groupe` | See the table in the “How it works” section     |
+
+## Exported functions
+
+| Function | Purpose |
+|----|----|
+| [`create_GS_CPP()`](https://inseefrlab.github.io/gridy/reference/create_GS_CPP.md) | Entry point. Builds the variable-resolution grid and the dissemination table. |
+| [`create_grid_niv()`](https://inseefrlab.github.io/gridy/reference/create_grid_niv.md) | Creates a square grid of a given mesh size and adds the Inspire identifier to the table. |
+| [`create_grids()`](https://inseefrlab.github.io/gridy/reference/create_grids.md) | Creates several nested grids in one pass. |
+| [`determiner_car_naturel()`](https://inseefrlab.github.io/gridy/reference/determiner_car_naturel.md) | Extracts the natural grid: on each branch, the finest disseminable cell. |
+| [`determiner_arb_naturel()`](https://inseefrlab.github.io/gridy/reference/determiner_arb_naturel.md) | Lookup table between natural cells and finest-level cells. |
+| [`imputer_cle_repartition()`](https://inseefrlab.github.io/gridy/reference/imputer_cle_repartition.md) | Distributes a group total across its cells in proportion to a key variable. |
+| [`make_contour_car()`](https://inseefrlab.github.io/gridy/reference/make_contour_car.md) | Converts an Inspire identifier into an `sf` polygon. |
+
+The algorithmic core (`det_etat()` and `det_etat_tot()`, written in C++)
+is internal and reachable through `gridy:::`.
+
+## Things to watch out for
+
+**Mesh order is not validated.**
+[`create_GS_CPP()`](https://inseefrlab.github.io/gridy/reference/create_GS_CPP.md)
+assumes `mailles` is sorted in decreasing order: `mailles[1]` becomes
+level 1, the last element the finest grid. An increasing vector yields
+an inconsistent tree without raising an error. This differs from
+[`create_grids()`](https://inseefrlab.github.io/gridy/reference/create_grids.md),
+which sorts its input itself.
+
+**Mesh sizes must be nested.** Each mesh size has to be a multiple of
+the next one (`32-16-8-4-2-1` km works). Otherwise a fine cell may
+straddle several parent cells and the tree becomes arbitrary.
+
+© Institut national de la statistique et des études économiques (Insee).
