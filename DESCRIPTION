@@ -1,4 +1,4 @@
-﻿Package: gridy
+Package: gridy
 Type: Package
 Title: Protect Multilevel Gridded Data with a Quadtree Approach
 Version: 0.1.2
@@ -19,7 +19,7 @@ Authors@R: c(
   ),
   person(
     "Julien", "Jamme", email = "julien.jamme@insee.fr",
-    role = c("cre")
+    role = c("aut", "cre")
   ),
   person(
       family = "Institut National de la Statistique et des Études Économiques",
@@ -28,7 +28,7 @@ Authors@R: c(
  )
 Maintainer: Julien Jamme <julien.jamme@insee.fr>
 License: MIT + file LICENSE
-URL: https://github.com/InseeFrLab/gridy, https://inseefrlab.github.io/gridy
+URL: https://github.com/InseeFrLab/gridy
 BugReports: https://github.com/InseeFrLab/gridy/issues
 Encoding: UTF-8
 Language: en
@@ -46,4 +46,4 @@ LinkingTo: Rcpp
 Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0
