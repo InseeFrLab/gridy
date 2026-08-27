@@ -57,7 +57,11 @@
 <p><strong>Protection of multilevel gridded data using a quadtree approach.</strong></p>
 <p><code>gridy</code> builds variable-resolution grids from geolocated data. The idea is to overlay several nested square grids, from the coarsest to the finest, then decide for each cell whether it can be disseminated on its own or has to be merged with its neighbours in order to meet a confidentiality threshold.</p>
 <p>The result is a grid whose resolution adapts to density: fine wherever counts allow it, coarse elsewhere.</p>
-<p>The method has been developed at Insee and is explained in a paper presented to a conference (Journées de Méthodologie Statistique) in 2018. The paper (in French) is available <a href="https://journees-methodologie-statistique.insee.net/diffusion-de-donnees-finement-localisees-ne-laisser-personne-sur-le-carreau/" class="external-link">here</a>. The method has been presented in NTTS 2023 conference, the poster is downloadable <a href="https://github.com/InseeFrLab/ntts_2023_poster_census_sdc_template_insee/blob/main/ntts_2023_poster_census_sdc_template_insee.pdf" class="external-link">here</a>.</p>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<p>The method has been developed at Insee and originally presented in a paper for the conference Journées de Méthodologie Statistique in 2018. The paper (in French) is available <a href="https://journees-methodologie-statistique.insee.net/diffusion-de-donnees-finement-localisees-ne-laisser-personne-sur-le-carreau/" class="external-link">here</a>. The method is also presented at the chapter 5 of the European <em>Guidelines for statistical disclosure control methods applied on geo-referenced data</em> (Möhler et al. 2025, <a href="data.europa.eu/doi/10.2785/8238461">data.europa.eu/doi/10.2785/8238461</a>).</p>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
